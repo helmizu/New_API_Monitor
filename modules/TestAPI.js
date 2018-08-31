@@ -28,16 +28,28 @@ class TestAPI extends EventEmitter {
     
     monitor(cb) {
         if(this.options.type === 'API') {
-            hippie()
-            .json()
-            .url(this.url)
-            .method(this.method)
-            .expectStatus(this.options.expectStatus)
-            .expectKey(this.options.newExpectKey)
-            .end(function(err, res, body) {
-                if (err) return cb(err, null, null);
-                cb(null, res, body)
-            });
+            if(this.options.expectKey) {
+                hippie()
+                .json()
+                .url(this.url)
+                .method(this.method)
+                .expectStatus(this.options.expectStatus)
+                .expectKey(this.options.expectKey)
+                .end(function(err, res, body) {
+                    if (err) return cb(err, null, null);
+                    cb(null, res, JSON.stringify(body))
+                });
+            } else {
+                hippie()
+                .json()
+                .url(this.url)
+                .method(this.method)
+                .expectStatus(this.options.expectStatus)
+                .end(function(err, res, body) {
+                    if (err) return cb(err, null, null);
+                    cb(null, res, JSON.stringify(body))
+                });
+            }
         } else {
             hippie()
             .url(this.url)
@@ -53,11 +65,13 @@ class TestAPI extends EventEmitter {
     convertKey(key, cb) {
         const keyArr = key.split(',')
         const newKey = []
-        keyArr.map(key => {
-            newKey.push(`[0].${key}`)
+        keyArr.map(k => {
+            newKey.push(`[0].${k}`)
             if(newKey.length === keyArr.length) {
-                cb(newKey.toString())
+                return cb(newKey.toString())
             }
         })
     }
 }
+
+module.exports = TestAPI
