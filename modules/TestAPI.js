@@ -27,6 +27,7 @@ class TestAPI extends EventEmitter {
     }
     
     monitor(cb) {
+        const { method, url, options } = this
         if(this.options.type === 'API') {
             if(this.options.expectKey) {
                 hippie()
@@ -36,7 +37,10 @@ class TestAPI extends EventEmitter {
                 .expectStatus(this.options.expectStatus)
                 .expectKey(this.options.expectKey)
                 .end(function(err, res, body) {
-                    if (err) return cb(err, null, null);
+                    if (err) {
+                        err.request = {url, method, options}
+                        return cb(err, null, null);
+                    }
                     cb(null, res, JSON.stringify(body))
                 });
             } else {
@@ -46,7 +50,10 @@ class TestAPI extends EventEmitter {
                 .method(this.method)
                 .expectStatus(this.options.expectStatus)
                 .end(function(err, res, body) {
-                    if (err) return cb(err, null, null);
+                    if (err) {
+                        err.request = {url, method, options}
+                        return cb(err, null, null);
+                    }
                     cb(null, res, JSON.stringify(body))
                 });
             }
@@ -56,12 +63,15 @@ class TestAPI extends EventEmitter {
             .method(this.method)
             .expectStatus(this.options.expectStatus)
             .end(function(err, res, body) {
-                if (err) return cb(err, null, null);
+                if (err) {
+                    err.request = {url, method, options}
+                    return cb(err, null, null);
+                }
                 cb(null, res, body)
             });
         }
     }
-
+    
     convertKey(key, cb) {
         const keyArr = key.split(',')
         const newKey = []

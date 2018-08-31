@@ -12,12 +12,12 @@ function monitor(SLACK_WEBHOOK_URL = '', URL = []) {
                 .monitor(function(err, res, body){
                     if (err) {
                         if (statusCode[api.url].status[statusCode[api.url].status.length-1] !== err.actual) {
-                            slack.send(`url : ${err.request.url} \n request : ${err.request.method} \n data : ${err.request.data} \n\n respond : ${err.actual} \n\n error : ${err.stack} \n\n body : ${body}`, function(){})
+                            slack.send(`Url : ${err.request.url} \n Request : ${err.request.method} \n Data : ${err.request.options.data} \n\n Respond : ${err.actual} \n\n Error : ${err.stack} \n\n Body : ${body}`, function(){})
                         }
                         statusCode[api.url].status.push(err.actual)
                     } else {
                         if(statusCode[api.url].status[statusCode[api.url].status.length-1] !== res.statusCode) {
-                            slack.send(`url : ${res.request.uri.href} \n request : ${res.request.method} \n data : ${res.request.data ? res.request.data : null} \n\n respond : ${res.statusCode} \n\n body : ${body}`, function(){})
+                            slack.send(`Url : ${res.request.uri.href} \n Request : ${res.request.method} \n Data : ${res.request.data ? res.request.data : null} \n\n Respond : ${res.statusCode} \n\n Body : ${body}`, function(){})
                         }
                         statusCode[api.url].status.push(res.statusCode)
                     }
