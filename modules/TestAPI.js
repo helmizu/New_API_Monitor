@@ -76,7 +76,7 @@ class TestAPI extends EventEmitter {
         const keyArr = key.split(',')
         const newKey = []
         keyArr.map(k => {
-            newKey.push(`[0].${k}`)
+            newKey.push(`[0].${k.trim()}`)
             if(newKey.length === keyArr.length) {
                 return cb(newKey.toString())
             }

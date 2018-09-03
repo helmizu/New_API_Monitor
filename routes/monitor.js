@@ -5,7 +5,7 @@ const config = require('../config/index')
 const URL = [
     {
         method : "GET",
-        url : "http://localhost:3000/monitor",
+        url : "http://localhost:7000/monitor",
         type : "API",
         expectKey : "msg"
     }
