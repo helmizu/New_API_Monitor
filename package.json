@@ -13,6 +13,7 @@
     "express": "~4.16.0",
     "hippie": "^0.5.2",
     "http-errors": "~1.6.2",
+    "mongodb": "^3.1.4",
     "morgan": "~1.9.0",
     "nodemon": "^1.18.4"
   }
