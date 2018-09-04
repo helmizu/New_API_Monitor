@@ -1,3 +1,5 @@
+const OID = require('mongodb').ObjectId
+
 const insertData = function(db, col, data, cb) {
     const collection = db.collection(col);
     collection.insertOne(data, function(err, result) {
