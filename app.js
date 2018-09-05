@@ -36,7 +36,7 @@ app.use('/data', dataRouter);
 app.use('/user', userRouter);
 app.get('/refresh-data', (req, res) => {
   MongoClient.connect(config.Mongo_URL, {useNewUrlParser : true}, function (err, client) {
-    if (err) return res.status(500).json(connect_err)
+    if (err) return res.status(500).json({err : "Connection Error"})
     const db = client.db(config.DB_Name)
     db.collection(config.data_url).find({ monitor : true}).toArray(function (err, URL) {
       client.close()
