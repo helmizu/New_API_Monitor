@@ -1,24 +1,11 @@
 const Router = require('express').Router()
-const { monitor, cekNow } = require('../controller/monitor')
+const { cekNow } = require('../controller/monitor')
 const config = require('../config/index')
 const MongoClient = require('mongodb').MongoClient
 const OID = require('mongodb').ObjectId
 
-const URL = [
-    {
-        method : "GET",
-        url : "http://localhost:7000/monitor",
-        type : "API",
-        expectKey : "msg"
-    }
-]
-
 Router.get('/', function(req, res) {
     res.status(200).json({msg : "hello. this default route"})
-})
-
-Router.get('/test', function (req, res) {
-    monitor(config.SLACK_WEBHOOK_URL, URL)
 })
 
 Router.get('/now/:id', function (req, res) {

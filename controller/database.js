@@ -9,10 +9,10 @@ function insertDataURL(req, res) {
         if (err) return res.status(500).json(connect_err)
         const db = client.db(config.DB_Name)
         database.insertData(db, config.data_url, req.body, function (err, result) {
+            client.close()
             if (err) return res.status(500).json(err)
             res.status(201).json(result)
         })
-        client.close()
     })
 }
 
@@ -21,10 +21,10 @@ function getDataURL(req, res) {
         if (err) return res.status(500).json(connect_err)
         const db = client.db(config.DB_Name)
         database.findData(db, config.data_url, {}, function (err, result) {
+            client.close()
             if (err) return res.status(500).json(err)
             res.status(200).json(result)
         })
-        client.close()
     })
 }
 
@@ -33,10 +33,10 @@ function searchIdDataURL(req, res) {
         if (err) return res.status(500).json(connect_err)
         const db = client.db(config.DB_Name)
         database.findData(db, config.data_url, {_id : new OID(req.params.id)}, function (err, result) {
+            client.close()
             if (err) return res.status(500).json(err)
             res.status(200).json(result[0])
         })
-        client.close()
     })
 }
 
@@ -45,10 +45,10 @@ function getMonitorDataURL(req, res) {
         if (err) return res.status(500).json(connect_err)
         const db = client.db(config.DB_Name)
         database.findData(db, config.data_url, {monitor : true}, function (err, result) {
+            client.close()
             if (err) return res.status(500).json(err)
             res.status(200).json(result[0])
         })
-        client.close()
     })
 }
 
@@ -57,10 +57,10 @@ function updateDataURL(req, res) {
         if (err) return res.status(500).json(connect_err)
         const db = client.db(config.DB_Name)
         database.updateData(db, config.data_url, req.params.id, req.body, function (err, result) {
+            client.close()
             if (err) return res.status(500).json(err)
             res.status(200).json(result)
         })
-        client.close()
     })
 }
 
@@ -69,10 +69,10 @@ function removeDataURL(req, res) {
         if (err) return res.status(500).json(connect_err)
         const db = client.db(config.DB_Name)
         database.removeData(db, config.data_url, req.params.id, function (err, result) {
+            client.close()
             if (err) return res.status(500).json(err)
             res.status(200).json(result)
         })
-        client.close()
     })
 }
 
