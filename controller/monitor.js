@@ -31,4 +31,22 @@ function monitor(SLACK_WEBHOOK_URL = '', URL = []) {
     })
 }
 
-module.exports = monitor
+function cekNow(SLACK_WEBHOOK_URL = '', URL = {}, cb) {
+    const slack = new Slack(SLACK_WEBHOOK_URL)
+    var data = ''
+    if (URL.data) {
+        data = JSON.parse(URL.data)
+    }
+    const API = new TestAPI(URL.method, URL.url, {type : URL.type, data : data, expectStatus : parseInt(URL.expectStatus), expectKey : URL.expectKey})
+    API.monitor(function (err, result, body) {
+        if (err) {
+            slack.send(`Url : ${err.request.url} \n Request : ${err.request.method} \n Data : ${err.request.options.data} \n\n Respond : ${err.actual} \n\n Error : ${err.stack} \n\n Body : ${body}`, function(){})
+            cb(err, null)
+        } else {
+            slack.send(`Url : ${result.request.uri.href} \n Request : ${result.request.method} \n Data : ${result.request.data ? result.request.data : null} \n\n Respond : ${result.statusCode} \n\n Body : ${body}`, function(){})
+            cb(null, result)
+        }
+    })
+}
+
+module.exports = { monitor, cekNow }

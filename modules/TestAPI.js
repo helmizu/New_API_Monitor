@@ -7,8 +7,8 @@ class TestAPI extends EventEmitter {
         if (!options || (options && (!options.expectStatus)) || options.expectStatus === 0) {
             options.expectStatus = 200
         }
-        if (!options || (options && (!options.data)) || Object.keys(options.data).length < 1) {
-            options.data = null
+        if (!options || (options && (!options.data)) || options.data === {}) {
+            options.data = {}
         }
         if (!options || (options && (!options.type)) || options.type === '') {
             options.header = null
@@ -34,6 +34,7 @@ class TestAPI extends EventEmitter {
                 .json()
                 .url(this.url)
                 .method(this.method)
+                .send(this.options.data)
                 .expectStatus(this.options.expectStatus)
                 .expectKey(this.options.expectKey)
                 .end(function(err, res, body) {
@@ -48,6 +49,7 @@ class TestAPI extends EventEmitter {
                 .json()
                 .url(this.url)
                 .method(this.method)
+                .send(this.options.data)
                 .expectStatus(this.options.expectStatus)
                 .end(function(err, res, body) {
                     if (err) {
