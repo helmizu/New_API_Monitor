@@ -2,10 +2,16 @@ const MongoClient = require('mongodb').MongoClient
 const OID = require('mongodb').ObjectId
 const database = require('../libraries/database')
 const config = require('../config')
-const connect_err = {err : "Connection Error"}
+const connect_err = {
+    err: "Connection Error"
+}
 
-function insertDataURL(req, res) {
-    MongoClient.connect(config.Mongo_URL, {useNewUrlParser : true}, function (err, client) {
+var manage = {}
+
+manage.insertDataURL = function (req, res) {
+    MongoClient.connect(config.Mongo_URL, {
+        useNewUrlParser: true
+    }, function (err, client) {
         if (err) return res.status(500).json(connect_err)
         const db = client.db(config.DB_Name)
         database.insertData(db, config.data_url, req.body, function (err, result) {
@@ -16,8 +22,10 @@ function insertDataURL(req, res) {
     })
 }
 
-function getDataURL(req, res) {
-    MongoClient.connect(config.Mongo_URL, {useNewUrlParser : true}, function (err, client) {
+manage.getDataURL = function (req, res) {
+    MongoClient.connect(config.Mongo_URL, {
+        useNewUrlParser: true
+    }, function (err, client) {
         if (err) return res.status(500).json(connect_err)
         const db = client.db(config.DB_Name)
         database.findData(db, config.data_url, {}, function (err, result) {
@@ -28,11 +36,15 @@ function getDataURL(req, res) {
     })
 }
 
-function searchIdDataURL(req, res) {
-    MongoClient.connect(config.Mongo_URL, {useNewUrlParser : true}, function (err, client) {
+manage.searchIdDataURL = function (req, res) {
+    MongoClient.connect(config.Mongo_URL, {
+        useNewUrlParser: true
+    }, function (err, client) {
         if (err) return res.status(500).json(connect_err)
         const db = client.db(config.DB_Name)
-        database.findData(db, config.data_url, {_id : new OID(req.params.id)}, function (err, result) {
+        database.findData(db, config.data_url, {
+            _id: new OID(req.params.id)
+        }, function (err, result) {
             client.close()
             if (err) return res.status(500).json(err)
             res.status(200).json(result[0])
@@ -40,11 +52,15 @@ function searchIdDataURL(req, res) {
     })
 }
 
-function getMonitorDataURL(req, res) {
-    MongoClient.connect(config.Mongo_URL, {useNewUrlParser : true}, function (err, client) {
+manage.getMonitorDataURL = function (req, res) {
+    MongoClient.connect(config.Mongo_URL, {
+        useNewUrlParser: true
+    }, function (err, client) {
         if (err) return res.status(500).json(connect_err)
         const db = client.db(config.DB_Name)
-        database.findData(db, config.data_url, {monitor : true}, function (err, result) {
+        database.findData(db, config.data_url, {
+            monitor: true
+        }, function (err, result) {
             client.close()
             if (err) return res.status(500).json(err)
             res.status(200).json(result[0])
@@ -52,8 +68,10 @@ function getMonitorDataURL(req, res) {
     })
 }
 
-function updateDataURL(req, res) {
-    MongoClient.connect(config.Mongo_URL, {useNewUrlParser : true}, function (err, client) {
+manage.updateDataURL = function (req, res) {
+    MongoClient.connect(config.Mongo_URL, {
+        useNewUrlParser: true
+    }, function (err, client) {
         if (err) return res.status(500).json(connect_err)
         const db = client.db(config.DB_Name)
         database.updateData(db, config.data_url, req.params.id, req.body, function (err, result) {
@@ -64,8 +82,10 @@ function updateDataURL(req, res) {
     })
 }
 
-function removeDataURL(req, res) {
-    MongoClient.connect(config.Mongo_URL, {useNewUrlParser : true}, function (err, client) {
+manage.removeDataURL = function (req, res) {
+    MongoClient.connect(config.Mongo_URL, {
+        useNewUrlParser: true
+    }, function (err, client) {
         if (err) return res.status(500).json(connect_err)
         const db = client.db(config.DB_Name)
         database.removeData(db, config.data_url, req.params.id, function (err, result) {
@@ -76,4 +96,4 @@ function removeDataURL(req, res) {
     })
 }
 
-module.exports = { insertDataURL, getDataURL, updateDataURL, removeDataURL, searchIdDataURL }
+module.exports = manage

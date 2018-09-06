@@ -9,12 +9,12 @@ class SlackMsg extends EventEmitter {
         }
         this.SLACK_WEBHOOK_URL = SLACK_WEBHOOK_URL;
     }
-    
-    send(message, cb){
+
+    send(message, cb) {
         let slackPayload = {
             text: `* ${message} *`
         }
-        
+
         request({
             method: 'POST',
             uri: this.SLACK_WEBHOOK_URL,
@@ -24,7 +24,7 @@ class SlackMsg extends EventEmitter {
             if (err) return console.log(`Error posting to Slack: ${err}`)
             cb()
         })
-    }    
+    }
 }
 
 module.exports = SlackMsg;
