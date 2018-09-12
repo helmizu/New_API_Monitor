@@ -28,7 +28,11 @@ function monitor(SLACK_WEBHOOK_URL = '', URL = []) {
                     statusCode[api.url].status.push(err.actual)
                 } else {
                     if (statusCode[api.url].status[statusCode[api.url].status.length - 1] !== res.statusCode) {
-                        slack.send(`Url : ${res.request.uri.href} \n Request : ${res.request.method} \n Data : ${res.request.data ? res.request.data : null} \n\n Respond : ${res.statusCode} \n\n Body : ${body}`, function () {})
+                        if (api.type == "Page") {
+                            slack.send(`Url : ${res.request.uri.href} \n Request : ${res.request.method} \n Data : ${res.request.data ? res.request.data : null} \n\n Respond : ${res.statusCode} \n\n`, function () {})
+                        } else {
+                            slack.send(`Url : ${res.request.uri.href} \n Request : ${res.request.method} \n Data : ${res.request.data ? res.request.data : null} \n\n Respond : ${res.statusCode} \n\n Body : ${body}`, function () {})
+                        }
                     }
                     statusCode[api.url].status.push(res.statusCode)
                 }
@@ -56,7 +60,12 @@ function cekNow(SLACK_WEBHOOK_URL = '', URL = {}, cb) {
             slack.send(`Url : ${err.request.url} \n Request : ${err.request.method} \n Data : ${err.request.options.data} \n\n Respond : ${err.actual} \n\n Error : ${err.stack} \n\n Body : ${body}`, function () {})
             cb(err, null)
         } else {
-            slack.send(`Url : ${result.request.uri.href} \n Request : ${result.request.method} \n Data : ${result.request.data ? result.request.data : null} \n\n Respond : ${result.statusCode} \n\n Body : ${body}`, function () {})
+            if (URL.type == "Page") {
+                slack.send(`Url : ${result.request.uri.href} \n Request : ${result.request.method} \n Data : ${result.request.data ? result.request.data : null} \n\n Respond : ${result.statusCode} \n\n`, function () {})
+            } else {
+                slack.send(`Url : ${result.request.uri.href} \n Request : ${result.request.method} \n Data : ${result.request.data ? result.request.data : null} \n\n Respond : ${result.statusCode} \n\n Body : ${body}`, function () {})
+            }
+
             cb(null, result)
         }
     })

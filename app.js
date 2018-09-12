@@ -35,7 +35,7 @@ var data_url = []
 
 setInterval(function () {
   monitor(config.SLACK_WEBHOOK_URL, data_url)
-}, 1000 * 30)
+}, 1000 * 15)
 
 app.use('/monitor', monitorRouter);
 app.use('/data', dataRouter);
